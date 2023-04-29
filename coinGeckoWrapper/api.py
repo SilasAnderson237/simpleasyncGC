@@ -38,9 +38,11 @@ class CoinGeckoWrapper:
         parameters: Parameters = {}
 
         for key, val in args:
+            # add all the kwargs to the parameters
             if key == "kwargs":
                 parameters.update(val)
 
+            # add all the other args to the parameters
             elif key != "self" and key != "format_callback" and val is not None:
                 parameters.update({key: val})
 
@@ -51,15 +53,6 @@ class CoinGeckoWrapper:
 
         return await asyncio.gather(*[req.get_task() for req in self.requests])
 
-    def get_requests(self):
-        """Runs all the tasks"""
-
-        result = asyncio.run(self._gather())
-
-        self.requests = [req for req in self.requests if req.status != Status.SUCCEEDED]
-
-        return result
-
     # ---------------------REQUESTS---------------------
 
     def _add_request(
@@ -68,6 +61,18 @@ class CoinGeckoWrapper:
         """Add a request to the list of unsent requests."""
 
         self.requests.append(Request(self.BASE_URL, endpoint, data, format_callback))
+
+    def run(self):
+        """Get the list of results."""
+
+        result = asyncio.run(self._gather())
+
+        # TODO: what to do with the requests that failed?
+
+        # remove all the requests that succeeded
+        self.requests = [req for req in self.requests if req.status != Status.SUCCEEDED]
+
+        return result
 
     # -----------------------PING-----------------------
 

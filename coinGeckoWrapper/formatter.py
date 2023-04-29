@@ -6,6 +6,8 @@ class CoinGeckoFormatter:
 
     @staticmethod
     def price_formatter(data: dict) -> pd.DataFrame:
+        """Formats the data from the price endpoint into a pandas dataframe."""
+
         # create dataframe without mentioning columns
         df = pd.DataFrame(data)
 

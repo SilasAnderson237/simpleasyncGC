@@ -44,7 +44,7 @@ class Request:
 
         # send the request
         async with httpx.AsyncClient() as session:
-            response = await session.get(self._url, params=self._params, timeout=200)
+            response = await session.get(self._url, params=self._params)
 
         # check whether the request failed
         if response.status_code != 200:
