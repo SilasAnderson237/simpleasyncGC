@@ -1,3 +1,3 @@
 # simpleasyncGC
 
-requires Python > 10.0, pandas and httpx
+requires Python > 3.10, pandas and httpx
